@@ -1,10 +1,30 @@
-version: '3'
+version: '3.8'
+
 services:
   web:
-     image: nginx
-     ports:
-        - "80:80"
+    image: nginx:latest
+    container_name: summar_web
+    ports:
+      - "80:80"
+    restart: always
+    networks:
+      - summar_bridge
+
   db:
-    image: mariadb
+    image: mariadb:latest
+    container_name: summar_db
     environment:
       MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: summar_datos
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    networks:
+      - summar_bridge
+
+networks:
+  summar_bridge:
+    driver: bridge
+
+volumes:
+  db_data:
